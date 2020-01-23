@@ -1,0 +1,16 @@
+CREATE CONSTRAINT ON (a:Actors) ASSERT a.actorid IS UNIQUE
+CREATE CONSTRAINT ON (m:Movies) ASSERT m.movieid IS UNIQUE
+CREATE CONSTRAINT ON (mta:MoviesToActors) ASSERT m.movieid IS UNIQUE
+
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';'
+MERGE (a:Actors {actorid: row.actorid})
+ON CREATE SET a.name = toString(row.name)
+ON CREATE SET a.sex = toString(row.sex)
+
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';'
+MATCH (a:Actors {actorid: row.actorid})
+CREATE (mta: MoviesToActors)
+SET mta+= row
+CREATE (a)-[:ACTS]->(mta)
