@@ -1,40 +1,51 @@
-CREATE CONSTRAINT ON (a:Actors) ASSERT a.actorid IS UNIQUE
-CREATE CONSTRAINT ON (m:Movies) ASSERT m.movieid IS UNIQUE
-CREATE CONSTRAINT ON (mta:MoviesToActors) ASSERT m.movieid IS UNIQUE
-
+// Create an actors node
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';'
-MERGE (a:Actors {actorid: row.actorid})
-ON CREATE SET a.name = toString(row.name)
-ON CREATE SET a.sex = toString(row.sex)
+CREATE (:actors {actorid: row.actorid, name: row.name, sex: row.sex});
 
+// Create a directors node
 USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';'
-MATCH (a:Actors {actorid: row.actorid})
-CREATE (mta: MoviesToActors)
-SET mta+= row
-CREATE (a)-[:ACTS]->(mta)
+LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELDTERMINATOR ';'
+CREATE (:directors {directorid: row.directorid, name: row.name, rate: toFloat(row.rate), gross: toFloat(row.gross), num: row.num});
 
-
-
-///MARK's attempt might not be correct
-USING PERIODIC COMMIT
-LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';'
-MERGE (a:Actors {actorid: row.actorid})
-ON CREATE SET a.name = toString(row.name)
-ON CREATE SET a.sex = toString(row.sex)
-
-
-
+// Create a movies node
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///movies.csv" AS row FIELDTERMINATOR ';'
-MERGE (m:Movies {movieid: row.movieid})
-ON CREATE SET m.title = toString(row.title)
-ON CREATE SET m.year = toInteger(row.year)
+CREATE (:movies {movieid: row.movieid, title: row.title, year: row.year});
+
+//this creates a way to quick lookup on the nodes
+CREATE INDEX ON :actors(actorid);
+CREATE INDEX ON :directors(directorid);
+CREATE INDEX ON :movies(movieid);
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';'
-MATCH (a:Actors) WHERE a.actorid = row.actorid
-MATCH (m:Movies) WHERE m.movieid = row.movieid
-CREATE (a) - [:Stars] -> (m)
-CREATE (m) - [:Casts]-> (a)
+MATCH (actors:actors {actorid: row.actorid})
+MATCH (movies:movies {movieid: row.movieid})
+MERGE (movies)-[c:casts]->(actors)
+ON CREATE SET c.as_character = row.as_character, c.leading = row.leading;
+
+#return 100 actors
+MATCH (a:actors)
+RETURN a
+LIMIT 100;
+
+#just return data from the movie node, casts relation and the actor node
+MATCH path = (m:movies)-[c:casts]->(a:actors)
+RETURN m.movieid AS MovieID, m.title AS MovieTitle, a.actorid AS ActorID, a.name AS ActorsName, c.as_character AS CharacterName, c.leading as Leading
+LIMIT 100;
+
+
+//Ridwans cyphers for task 3
+//1: COUNT MALES
+MATCH (a:actors)  
+WHERE a.sex="M" 
+RETURN COUNT(a) AS MaleCount
+//Answer is 65794
+
+
+//2: COUNT FEMALES
+MATCH (a:actors)  
+WHERE a.sex="F" 
+RETURN COUNT(a) AS FemaleCount
+//Answer is 32896
