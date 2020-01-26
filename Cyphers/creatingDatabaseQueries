@@ -13,17 +13,40 @@ USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///movies.csv" AS row FIELDTERMINATOR ';'
 CREATE (:movies {movieid: row.movieid, title: row.title, year: row.year});
 
+//Create a writers node
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///writers.csv" AS row FIELDTERMINATOR ';'
+CREATE (:writers {writerid: row.writerid, name: row.name});
+
 //this creates a way to quick lookup on the nodes
 CREATE INDEX ON :actors(actorid);
 CREATE INDEX ON :directors(directorid);
 CREATE INDEX ON :movies(movieid);
+CREATE INDEX ON :writers(writerid);
 
+//link between movies and actors
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';'
 MATCH (actors:actors {actorid: row.actorid})
 MATCH (movies:movies {movieid: row.movieid})
 MERGE (movies)-[c:casts]->(actors)
 ON CREATE SET c.as_character = row.as_character, c.leading = row.leading;
+
+//link between movies and directors
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///moviestodirectors.csv" AS row FIELDTERMINATOR ';'
+MATCH (directors:directors {directorid: row.directorid})
+MATCH (movies:movies {movieid: row.movieid})
+MERGE (movies)-[d:directed_by]->(directors)
+ON CREATE SET d.genre = row.genre;
+
+//link between movies and writers
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///moviestowriters.csv" AS row FIELDTERMINATOR ';'
+MATCH (writers:writers {writerid: row.writerid})
+MATCH (movies:movies {movieid: row.movieid})
+MERGE (movies)-[w:written_by]->(writers)
+ON CREATE SET w.addition = row.addition;
 
 #return 100 actors
 MATCH (a:actors)
@@ -58,3 +81,8 @@ RETURN m.title AS movieTitles
 //Answer:
 //"Being Human (1994)"
 //"Trainspotting (1996)"
+
+//7 Movies Directed by Spielberg
+MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
+RETURN count(m) AS SpielbergMovies
+//Answer is 14
