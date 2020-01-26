@@ -50,6 +50,7 @@ WHERE a.sex="F"
 RETURN COUNT(a) AS FemaleCount
 //Answer is 32896
 
+//Mark Cypher
 //6:Movies with Ewan McGregor and Robert Carlyle
 MATCH (m:movies),(o:actors {name:"McGregor, Ewan"}), (r:actors {name:"Carlyle, Robert (I)"})
 WHERE (m)-[:casts]->(o) AND (m)-[:casts]->(r)
