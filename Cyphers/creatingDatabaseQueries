@@ -48,6 +48,22 @@ MATCH (movies:movies {movieid: row.movieid})
 MERGE (movies)-[w:written_by]->(writers)
 ON CREATE SET w.addition = row.addition;
 
+//create and link movies to ratings
+USING PERIODIC COMMIT 
+LOAD CSV WITH HEADERS FROM "file:///ratings.csv" AS row FIELDTERMINATOR ';'
+MATCH (m:movies {movieid: row.movieid})
+CREATE (r:ratings)
+SET r+= row
+CREATE (m)-[:has_rating]->(r)
+
+//create and link movies to runtime
+USING PERIODIC COMMIT 
+LOAD CSV WITH HEADERS FROM "file:///runningtimes.csv" AS row FIELDTERMINATOR ';'
+MATCH (m:movies {movieid: row.movieid})
+CREATE (t:runtime)
+SET t+= row
+CREATE (m)-[:length]->(t)
+
 #return 100 actors
 MATCH (a:actors)
 RETURN a
