@@ -7,6 +7,16 @@
 
 ## Table of Contents
 
+* [Contributions](https://github.com/CMHayden/NoSQL-Data-Storage#contributions)
+    * [Ridwan Mukhtar](https://github.com/CMHayden/NoSQL-Data-Storage#ridwan-mukhtar)
+    * [Mark Schmieg](https://github.com/CMHayden/NoSQL-Data-Storage#mark-schmieg)
+    * [Callum Hayden](https://github.com/CMHayden/NoSQL-Data-Storage#callum-hayden)
+* [Task 1](https://github.com/CMHayden/NoSQL-Data-Storage#task-1)
+* [Task 2](https://github.com/CMHayden/NoSQL-Data-Storage#task-2)
+* [Task 3](https://github.com/CMHayden/NoSQL-Data-Storage#task-3)
+* [Conclusion](https://github.com/CMHayden/NoSQL-Data-Storage#conclusion)
+* [Appendix](https://github.com/CMHayden/NoSQL-Data-Storage#appendix)
+
 ## Contributions
 
 In this section we will discuss a summary of the contributions of each group member
@@ -62,3 +72,7 @@ In this section we will discuss a summary of the contributions of each group mem
 14. How many movies have an actor/actress that also directed the movie?
 
 15. How many movies have been written and directed by an actor/actress that they didn't star in? *i.e. the person who wrote and directed the movie is a film star but didn't appear in the movie*
+
+## Conclusion
+
+## Appendix
