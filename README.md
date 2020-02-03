@@ -18,9 +18,9 @@
 * [Task 3](https://github.com/CMHayden/NoSQL-Data-Storage#task-3)
 * [Conclusion](https://github.com/CMHayden/NoSQL-Data-Storage#conclusion)
 * [Appendix](https://github.com/CMHayden/NoSQL-Data-Storage#appendix)
-    * [Task 1]()
-    * [Task 2]()
-    * [Task 3]()
+    * [Task 1](https://github.com/CMHayden/NoSQL-Data-Storage#task-1-1)
+    * [Task 2](https://github.com/CMHayden/NoSQL-Data-Storage#task-2-1)
+    * [Task 3](https://github.com/CMHayden/NoSQL-Data-Storage#task-3-1)
 
 ## Contributions
 
