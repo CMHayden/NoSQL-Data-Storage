@@ -18,6 +18,9 @@
 * [Task 3](https://github.com/CMHayden/NoSQL-Data-Storage#task-3)
 * [Conclusion](https://github.com/CMHayden/NoSQL-Data-Storage#conclusion)
 * [Appendix](https://github.com/CMHayden/NoSQL-Data-Storage#appendix)
+    * [Task 1]()
+    * [Task 2]()
+    * [Task 3]()
 
 ## Contributions
 
@@ -78,3 +81,117 @@ In this section we will discuss a summary of the contributions of each group mem
 ## Conclusion
 
 ## Appendix
+
+### Task 1
+
+### Task 2
+
+```sql
+--Loading data
+LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///movies.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///ratings.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///runningtimes.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///writers.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///moviestodirectors.csv" AS row FIELDTERMINATOR ';' RETURN row
+LOAD CSV WITH HEADERS FROM "file:///moviestowriters.csv" AS row FIELDTERMINATOR ';' RETURN row
+
+--Create an actors node
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';'
+CREATE (:actors {actorid: row.actorid, name: row.name, sex: row.sex});
+
+--Create a directors node
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELDTERMINATOR ';'
+CREATE (:directors {directorid: row.directorid, name: row.name, rate: toFloat(row.rate), gross: toFloat(row.gross), num: row.num});
+
+--Create a movies node
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///movies.csv" AS row FIELDTERMINATOR ';'
+CREATE (:movies {movieid: row.movieid, title: row.title, year: row.year});
+
+--Create a writers node
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///writers.csv" AS row FIELDTERMINATOR ';'
+CREATE (:writers {writerid: row.writerid, name: row.name});
+
+--this creates a way to quick lookup on the nodes
+CREATE INDEX ON :actors(actorid);
+CREATE INDEX ON :directors(directorid);
+CREATE INDEX ON :movies(movieid);
+CREATE INDEX ON :writers(writerid);
+
+--link between movies and actors
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';'
+MATCH (actors:actors {actorid: row.actorid})
+MATCH (movies:movies {movieid: row.movieid})
+MERGE (movies)-[c:casts]->(actors)
+ON CREATE SET c.as_character = row.as_character, c.leading = row.leading;
+
+--link between movies and directors
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///moviestodirectors.csv" AS row FIELDTERMINATOR ';'
+MATCH (directors:directors {directorid: row.directorid})
+MATCH (movies:movies {movieid: row.movieid})
+MERGE (movies)-[d:directed_by]->(directors)
+ON CREATE SET d.genre = row.genre;
+
+--link between movies and writers
+USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS FROM "file:///moviestowriters.csv" AS row FIELDTERMINATOR ';'
+MATCH (writers:writers {writerid: row.writerid})
+MATCH (movies:movies {movieid: row.movieid})
+MERGE (movies)-[w:written_by]->(writers)
+ON CREATE SET w.addition = row.addition;
+
+--create and link movies to ratings
+USING PERIODIC COMMIT 
+LOAD CSV WITH HEADERS FROM "file:///ratings.csv" AS row FIELDTERMINATOR ';'
+MATCH (m:movies {movieid: row.movieid})
+CREATE (r:ratings)
+SET r+= row
+CREATE (m)-[:has_rating]->(r)
+
+--create and link movies to runtime
+USING PERIODIC COMMIT 
+LOAD CSV WITH HEADERS FROM "file:///runningtimes.csv" AS row FIELDTERMINATOR ';'
+MATCH (m:movies {movieid: row.movieid})
+CREATE (t:runtime)
+SET t+= row
+CREATE (m)-[:length]->(t)
+```
+
+### Task 3
+
+```sql
+--1: 
+COUNT MALES
+MATCH (a:actors)  
+WHERE a.sex="M" 
+RETURN COUNT(a) AS MaleCount
+
+--2: 
+COUNT FEMALES
+MATCH (a:actors)  
+WHERE a.sex="F" 
+RETURN COUNT(a) AS FemaleCount
+
+--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--x--
+
+--6:
+Movies with Ewan McGregor and Robert Carlyle
+MATCH (m:movies),(o:actors {name:"McGregor, Ewan"}), (r:actors {name:"Carlyle, Robert (I)"})
+WHERE (m)-[:casts]->(o) AND (m)-[:casts]->(r)
+RETURN m.title AS movieTitles
+
+
+--7:
+Movies Directed by Spielberg
+MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
+RETURN count(m) AS SpielbergMovies
+//Answer is 14
+```
