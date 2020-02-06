@@ -1,9 +1,9 @@
 # Assignment One - NoSQL Data Storage
 
 ## Group 10
-**Ridwan Mukhtar** *TODO - TODO*
+**Ridwan Mukhtar** *RM109 - H00247135*
 
-**Mark Schmieg** *TODO - TODO*
+**Mark Schmieg** *MS147 - H00338262*
 
 **Callum Hayden** *CMH1 - H00223708*
 
@@ -24,7 +24,7 @@
 
 ## Contributions
 
-In this section we will discuss a summary of the contributions of each group member
+In this section we will discuss a summary of the contributions of each group member, and any issues which arose while collaborating.
 
 ### Ridwan Mukhtar
 
