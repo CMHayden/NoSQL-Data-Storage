@@ -113,3 +113,12 @@ LIMIT 3
 //7.625	"Western"
 //7.6	"Documentary"
 //7.5	"Film-Noir"
+
+
+//12 Show the shortest path between actors ‘Ewan McGregor’ and ‘Mark Hamill’ from the IMDB data subset.  Include nodes and edges –answer can be shown as an image or text description in form (a)-[ ]->(b)-[ ]-> (c)..
+MATCH (a:actors {name:"McGregor, Ewan"}), (h:actors {name:"Hamill, Mark (I)"}),
+p = shortestPath((a)-[*]-(h)) 
+WHERE a.name = "McGregor, Ewan" AND h.name = "Hamill, Mark (I)"
+RETURN p
+//Answer 
+//take screenshot
