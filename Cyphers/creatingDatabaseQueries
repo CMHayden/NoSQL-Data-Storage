@@ -102,3 +102,14 @@ RETURN m.title AS movieTitles
 MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
 RETURN count(m) AS SpielbergMovies
 //Answer is 14
+
+//11 Based ratings with 10,000 or more votes, what are the top 3 movie genres usingthe average rank per movie genreas the metric?(Note: where a higher value for rankis considered a better movie)
+MATCH (r:ratings)<-[has_rating]-(m:movies)-[d:directed_by]->(directors)
+WHERE toInt(r.votes)>10000
+RETURN avg(toInt(r.rank)) AS averageRank, d.genre
+ORDER BY averageRank DESC
+LIMIT 3
+//Answer is:
+//7.625	"Western"
+//7.6	"Documentary"
+//7.5	"Film-Noir"
