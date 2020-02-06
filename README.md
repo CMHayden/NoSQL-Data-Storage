@@ -38,6 +38,8 @@ In this section we will discuss a summary of the contributions of each group mem
 
 *Details of entities, links, and other information provided gets us the full marks (4-5)*
 
+![UML Diagram](https://github.com/CMHayden/NoSQL-Data-Storage/images/UMLDiagram.png)
+
 ## Task 2
 
 *Load the data provided into Neo4J giving the details in your report on any data cleaning/transformations/checks/loading commands used. These should be detailed enough for someone else to implement given they know how to use Neo4J.*
