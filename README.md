@@ -46,6 +46,20 @@ In this section we will discuss a summary of the contributions of each group mem
 
 *Full instructions on loading data with additional steps taken after loading dataset gets us full marks (8-10)*
 
+After designing the database, we worked on creating the database. The first issue we encountered was with the formatting of the CSV file. We attempted to load data with this query:
+
+```SQL
+LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELD RETURN row
+```
+
+//
+
+We found two ways we could fix this issue. This first was to change the format of the CSV file to ensure all data was formatted correctly and as expected. The second was to change the query to include the terminator parameter, using ";" as the terminator. 
+
+The solution we chose was to use the terminator so as not to edit the data as to the dataset only being a subset of the full IMDB dataset. If we chose to edit the data, then when adding the full database it may not work as expected.
+
+The commands used to load the data can be found in the appendix. All of these commands should be ran to load all of the data files into the database.
+
 ## Task 3
 
 *For 2 marks you need to provide Cypher code and correct answer; correct answer without any cypher code will score 0; Wrong answer but Cypher code demonstrating correct idea may score 1 mark. Max is 30 marks*
