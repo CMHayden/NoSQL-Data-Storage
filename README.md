@@ -38,7 +38,7 @@ In this section we will discuss a summary of the contributions of each group mem
 
 *Details of entities, links, and other information provided gets us the full marks (4-5)*
 
-![UML Diagram](https://github.com/CMHayden/NoSQL-Data-Storage/images/UMLDiagram.png)
+![UML Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/UMLDiagram.png?token=AFNT2CCQ24QNCKFDKXN52226IWG5E)
 
 ## Task 2
 
