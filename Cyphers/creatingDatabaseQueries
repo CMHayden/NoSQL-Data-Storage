@@ -89,6 +89,19 @@ WHERE a.sex="F"
 RETURN COUNT(a) AS FemaleCount
 //Answer is 32896
 
+//4:List the movie titles and number of directors involved for movies with more than 6directors
+MATCH (m:movies)-[d:directed_by]->(dir: directors)
+WITH m, count(dir.name) AS DirectorCount
+WHERE DirectorCount > 6
+RETURN m.title, DirectorCount
+//Answer
+//"Fantasia (1940)"	11
+//"Fantasia/2000 (1999)"	8
+//"Bambi (1942)"	7
+//"Dumbo (1941)"	7
+//"Duel in the Sun (1946)"	7
+//"Pinocchio (1940)"	7
+
 //Mark Cypher
 //6:Movies with Ewan McGregor and Robert Carlyle
 MATCH (m:movies),(o:actors {name:"McGregor, Ewan"}), (r:actors {name:"Carlyle, Robert (I)"})
