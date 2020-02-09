@@ -126,8 +126,8 @@ RETURN p
 
 //13 List all actors(male/female) that have starred in 10 or moredifferent film genres  (show names, and number of genres)
 MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(directors)
-WITH a, count(distinct d.genre) AS GenreCount
-WHERE GenreCount > 10
+WITH a, count(DISTINCT d.genre) AS GenreCount
+WHERE GenreCount >= 10
 RETURN a.name, GenreCount
 //Answer
 //"Peck, Gregory"	10
