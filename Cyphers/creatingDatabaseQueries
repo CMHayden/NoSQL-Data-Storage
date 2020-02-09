@@ -131,3 +131,10 @@ WHERE GenreCount >= 10
 RETURN a.name, GenreCount
 //Answer
 //"Peck, Gregory"	10
+
+//14 
+MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(dir: directors)
+WHERE a.name = dir.name
+RETURN count(m) AS MovieCount
+//Answer
+//496
