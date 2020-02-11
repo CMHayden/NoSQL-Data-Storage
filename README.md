@@ -85,28 +85,50 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 *For 2 marks you need to provide Cypher code and correct answer; correct answer without any cypher code will score 0; Wrong answer but Cypher code demonstrating correct idea may score 1 mark. Max is 30 marks*
 
 1.  How many female actos are listed in the dataset supplied?
+    32896
 
 2.  How many male actors are listed in the dataset supplied?
+    65794
 
 3.  Write a CYPHER query that shows the number of female actors and the number of male actors as a single query.
+    "M" 65794
+    "F" 32896
 
 4.  List the movie titles and number of directors involved for movies with more than six directors.
+    "Fantasia (1940)"	        11
+    "Fantasia/2000 (1999)"	    8
+    "Bambi (1942)"	            7
+    "Dumbo (1941)"	            7
+    "Duel in the Sun (1946)"	7
+    "Pinocchio (1940)"	        7
 
 5.  Number of movies with a running time of less than 10 minutes.
+    7
 
 6.  The movie titles which star both 'Ewan McGregor' and 'Robert Carlyle' (i.e. both actors were in the same film)
+    "Being Human (1994)"
+    "Trainspotting (1996)"
 
 7.  Number of movies directed by 'Spielberg'.
+    14
 
 8.  List the male/female actors that have worked together on more than ten films, include their names and number of films they've co-starred in.
 
 9.  List the number of movies released per decade as listed here: 1960-1969, 1970-1979, 1980-1989, 1990-1999, 2000-2010.
 
 10. How many movies have more female actors than male actors?
+    324
 
 11. Based ratings with ten thousand or more votes, what are the top three movie genres using the average rank per movie genre as the metric? (Higher value for rank is considered a better movie).
+    7.625   "Western"
+    7.6	    "Documentary"
+    7.5	    "Film-Noir"
 
-12. Show the shortest path between actors 'Ewan McGregor' and 'Mark Hamill' from the IMDB data subset. Include nodes and edges. *Answer can be shown as an image or text description in form (a)-[ ]->(b)-[ ]-> (c)… So possibly best to do both?*
+12. Show the shortest path between actors 'Ewan McGregor' and 'Mark Hamill' from the IMDB data subset. Include nodes and edges. 
+
+    (Ewan McGregor)<- [ casts ]-(Star Wars: Episode I - The Phantom Menace) -[ casts ]-> (Daniels, Anthony (I)) <-[ casts ]- (Star Wars (1977)) -[ casts ]-> (Mark Hamill)
+
+    ![Graph output for this query](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/question%2012.png?token=AFNT2CCULVHEFVHJMR6HP426JQHYW)
 
 13. List all actors (male/female) that have starred in ten or more different film genres (show names, and number of genres).
 
