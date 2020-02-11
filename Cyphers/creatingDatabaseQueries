@@ -122,3 +122,8 @@ WHERE a.name = "McGregor, Ewan" AND h.name = "Hamill, Mark (I)"
 RETURN p
 //Answer 
 //take screenshot
+
+//Callum
+//3 male and female count in 1 query
+MATCH(a:actors)
+return a.sex, COUNT(*)
