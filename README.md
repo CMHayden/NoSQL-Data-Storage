@@ -166,9 +166,12 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 
 ## Conclusion
 
-In conclusion, we learnt how to truely collaborate. While it would have been easier to simply split up the queries into five each and get them done individually, we chose to attempt to collaborate. We used github (private reporsitory) to help with our collaboration and we attempted to all work on everything. The harder queries we sat together and attempted to figure them out between us which lead to a great experience of learning to be better team players. This also allowed us to discuss how we are doing queries, and which we believe would be the more efficient way of doing a query, along with all pitching in towards the design of the graph itself.
+In conclusion, we learnt how to truly collaborate. While it would have been easier to simply split up the queries into five each and get them done individually, we chose to attempt to collaborate. We used GitHub (private repository) to help with our collaboration and we attempted to all work on everything. The harder queries we sat together and attempted to figure them out between us which lead to a great experience of learning to be better team players. This also allowed us to discuss how we are doing queries, and which we believe would be the more efficient way of doing a query, along with all pitching in towards the design of the graph itself.
 
-Apart from our soft skills, we all learnt massively about graph databases and enjoyed finding similarities between it with computing concepts we already know such as graph data structures, SQL and object oriented programming. One of the biggest similarities found however was with JSON which helped a lot when thinking how write the complex queries.
+Apart from our soft skills, we all learnt massively about graph databases and enjoyed finding similarities between it with computing concepts we already know such as graph data structures, SQL and object-oriented programming. One of the biggest similarities found however was with JSON which helped a lot when thinking how write the complex queries.
+
+We all got to learn and practice cypher syntax. From simple queries such as counting the amount of male actors, to more complex queries such as query 11 which matches multiple nodes and edges to get the required data.
+
 
 ## Appendix
 
