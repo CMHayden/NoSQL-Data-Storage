@@ -52,13 +52,33 @@ After designing the database, we worked on creating the database. The first issu
 LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELD RETURN row
 ```
 
-//
+Unfortunetly, this lead to a syntax error as neo4j did not understand how to sperate the data. This would have worked if each row of data was correctly formatted into columns, however, it was not.
 
 We found two ways we could fix this issue. This first was to change the format of the CSV file to ensure all data was formatted correctly and as expected. The second was to change the query to include the terminator parameter, using ";" as the terminator. 
 
 The solution we chose was to use the terminator so as not to edit the data as to the dataset only being a subset of the full IMDB dataset. If we chose to edit the data, then when adding the full database it may not work as expected.
 
 The commands used to load the data can be found in the appendix. All of these commands should be ran to load all of the data files into the database.
+
+Once the data files are loaded in, the next step is to create the graph itself. To do this we began by creating the nodes. The queries used can be found in the appendix, and the nodes created are the actors node, the directors node, the writers node and the movies node. We then created indexes for these nodes by using the code found in the appendix.
+
+Once we had our nodes and their indexes, we needed a way to link them. To do this we created the relationships between the nodes, for example, the link between movies and writers. This link states that movies were written by a writer, and gives us a link between the nodes with which we can carry out queries involving both nodes. Some of these relationships such as that mentioned above links two nodes together, however, some create a new node such as the link between movies and rating, which creates a new rating node. The code for this can be found in the appendix.
+
+We then tested the database by using some simple commands such as "call db.schema()" to see how the graph looked. The output to this query looks like so:
+
+![Screenshot of output of call db.schema() command](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/screenshotOfGraph.png?token=AFNT2CDPDJVD7IH2WXSWXMK6JQD7O)
+
+And we also ran commands such as:
+
+```SQL
+MATCH(n:actors)
+RETURN n
+LIMIT 100
+```
+
+For each of our nodes. This returns the first 100 actors stored inside the actors node and is something we recommend to ensure the data is loaded as expected. You can remove the limit, however, the query may take a long time to run. Sample output should look similar to this:
+
+![Output for 100 actors query](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/100Actors.png?token=AFNT2CCL7DHXDSO6ILXKDZC6JQFD6)
 
 ## Task 3
 
