@@ -149,3 +149,8 @@ RETURN p
 //3 male and female count in 1 query
 MATCH(a:actors)
 return a.sex, COUNT(*)
+
+//5 count running time <10 mins
+match(t:runtime)
+where toInteger(t.time) < 10
+return count(t) as LessThanTen
