@@ -89,6 +89,11 @@ WHERE a.sex="F"
 RETURN COUNT(a) AS FemaleCount
 //Answer is 32896
 
+//Callum
+//3 male and female count in 1 query
+MATCH(a:actors)
+return a.sex, COUNT(*)
+
 //4:List the movie titles and number of directors involved for movies with more than 6directors
 MATCH (m:movies)-[d:directed_by]->(dir: directors)
 WITH m, count(dir.name) AS DirectorCount
@@ -101,6 +106,12 @@ RETURN m.title, DirectorCount
 //"Dumbo (1941)"	7
 //"Duel in the Sun (1946)"	7
 //"Pinocchio (1940)"	7
+
+
+//5 count running time <10 mins
+match(t:runtime)
+where toInteger(t.time) < 10
+return count(t) as LessThanTen
 
 //Mark Cypher
 //6:Movies with Ewan McGregor and Robert Carlyle
@@ -145,12 +156,19 @@ RETURN p
 //Answer 
 //take screenshot
 
-//Callum
-//3 male and female count in 1 query
-MATCH(a:actors)
-return a.sex, COUNT(*)
+//13 List all actors(male/female) that have starred in 10 or moredifferent film genres  (show names, and number of genres)
+MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(directors)
+WITH a, count(DISTINCT d.genre) AS GenreCount
+WHERE GenreCount >= 10
+RETURN a.name, GenreCount
+//Answer
+//"Peck, Gregory"	10
 
-//5 count running time <10 mins
-match(t:runtime)
-where toInteger(t.time) < 10
-return count(t) as LessThanTen
+//14 
+MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(dir: directors)
+WHERE a.name = dir.name
+RETURN count(m) AS MovieCount
+//Answer
+//496
+
+
