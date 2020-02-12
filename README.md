@@ -40,23 +40,23 @@ In this section we will discuss a summary of the contributions of each group mem
 
 IMDB, also known as the Internet Movie Database, is an online database which stores data related to films, tv shows, video games, etc. In this coursework, we are focusing on a subset of the IMDB dataset which only includes information relating to films. The dataset was provided to us as part of the coursework and includes the following files:
 
-    * actors.csv
+* actors.csv
 
-    * directors.csv
+* directors.csv
 
-    * movies.csv
+* movies.csv
 
-    * ratings.csv
+* ratings.csv
 
-    * runningtimes.csv
+* runningtimes.csv
 
-    * writers.csv
+* writers.csv
 
-    * moviestoactors.csv
+* moviestoactors.csv
 
-    * moviestodirectors.csv
+* moviestodirectors.csv
 
-    * moviestowriters.csv
+* moviestowriters.csv
 
 
 ![UML Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/UMLDiagram.png?token=AFNT2CCQ24QNCKFDKXN52226IWG5E)
