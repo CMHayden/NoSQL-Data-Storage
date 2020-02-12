@@ -41,30 +41,39 @@ In this section we will discuss a summary of the contributions of each group mem
 IMDB, also known as the Internet Movie Database, is an online database which stores data related to films, tv shows, video games, etc. In this coursework, we are focusing on a subset of the IMDB dataset which only includes information relating to films. The dataset was provided to us as part of the coursework and includes the following files:
 
 * **actors.csv**
+
 This file stores information relating to actors. It stores an id to identify them, a name, and a gender.
 
 * **directors.csv**
-This file stores information relating to directors. It stores an id to identify them, a name, a rat...
+
+This file stores information relating to directors. It stores an id to identify them, a name, a rat... **TODO RATE GROSS NUM**
 
 * **movies.csv**
+
 This file stores information relating to films. It stores an id to identify them, the title of the movie, and the year it was released.
 
 * **ratings.csv**
+
 This file stores ratings for different movies. It stores a movie id to state which movie the rating is for, along with a rank out of ten, the number of votes the movie has received, and the distribution of votes/rank.
 
 * **runningtimes.csv**
+
 This file stores the length of different movies. It stores a movie id to link to a movie, a time and a time1 where they may be the same, but are used to distinguish different running times between versions, and an option version of the movie such as DVD or extended cut.
 
 * **writers.csv**
+
 This file stores information about the writers of films. It stores an ID along with a name for each writer.
 
 * **moviestoactors.csv**
+
 This file stores information which relates a movie to an actor. It stores a movie id and an actor id to match them with the movies and actors files, along with information about the role being played by the actor in the given movie, such as the character the actor played.
 
 * **moviestodirectors.csv**
+
 This file stores information which relates a movie to a director. It stores a movie id and a director id to match them with the movies and directors files. It also includes the genre of the movie.
 
 * **moviestowriters.csv**
+
 This file stores information which relates a movie to a writer. It stores a movie id and an writer id to match them with the movies and writers files. It also includes information about the written format of the movie, such as if it was a screenplay, if a writer was uncredited, or if it was based on a novel by the writer amongst other options.
 
 ![UML Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/UMLDiagram.png?token=AFNT2CCQ24QNCKFDKXN52226IWG5E)
