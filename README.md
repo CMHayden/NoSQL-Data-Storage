@@ -76,7 +76,107 @@ This file stores information which relates a movie to a director. It stores a mo
 
 This file stores information which relates a movie to a writer. It stores a movie id and an writer id to match them with the movies and writers files. It also includes information about the written format of the movie, such as if it was a screenplay, if a writer was uncredited, or if it was based on a novel by the writer amongst other options.
 
-![UML Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/UMLDiagram.png?token=AFNT2CCQ24QNCKFDKXN52226IWG5E)
+In designing the graph database, we chose to create six nodes, one for movies, with five that have relationships with movies which are actors, directors, ratings and running time. These nodes store the following data:
+
+* Movies
+
+    * movieid
+
+    * title
+
+    * year
+
+* Actors
+
+    * actorid
+
+    * name
+
+    * sex
+
+* Directors
+
+    * directorid
+
+    * name
+
+    * rate
+
+    * gross
+
+    * num
+
+* Rating
+
+    * movieid
+
+    * rank
+
+    * votes
+
+    * distribution
+
+* Running Time
+
+    * movieid
+
+    * time
+
+    * addition
+
+    * time1
+
+* Writers
+
+    * writerid
+
+    * name
+
+Movies are connected through edges, some of which, contain data of their own. These are:
+
+* Movies are *directed_by* directors
+
+    Stores the data from the moviestodirectors.csv file. It allows for linking movies to directors based on a movieid and a directorid. The data stored is:
+
+    * movieid
+
+    * directorid
+
+    * genre
+
+* Movies *cast* actors
+
+    Stores the data from the moviestoactors.csv file. It allows for linking movies to actors based on a movieid and an actorid. The data stored is:
+
+    * movieid
+
+    * actorid
+
+    * as_character
+
+    * leading
+
+* Movies are *written_by* writers
+
+    Stores the data from the moviestowriters.csv file. It allows for linking movies to writers based on a movieid and a writerid. The data stored is:
+
+    * movieid
+
+    * writerid
+
+    * addition
+
+* Movies *has_ratings* ratings
+
+    Connects movies to ratings based on movieid.
+
+* Movies *length* runningtimes
+
+    Connects movies to runningtimes based on movieid.
+
+This can be seen in the ER Diagram
+
+![ER Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/UMLDiagram.png?token=AFNT2CCQ24QNCKFDKXN52226IWG5E)
 
 ## Task 2
 
