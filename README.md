@@ -493,4 +493,22 @@ WHERE a.name = dir.name
 RETURN count(m) AS MovieCount
 //Answer
 //496
+
+//9
+optional match(m:movies)
+where tointeger(m.year) > 1959 AND tointeger(m.year) < 1970
+with count(m) as sixties
+optional match(m:movies)
+where tointeger(m.year) > 1969 AND tointeger(m.year) < 1980
+with count(m) as seventies, sixties
+optional match(m:movies)
+where tointeger(m.year) > 1979 AND tointeger(m.year) < 1990
+with count(m) as eighties, seventies, sixties
+optional match(m:movies)
+where tointeger(m.year) > 1989 AND tointeger(m.year) < 2000
+with count(m) as nineties, eighties, seventies, sixties
+optional match(m:movies)
+where tointeger(m.year) > 1999 AND tointeger(m.year) < 2010
+with count(m) as twothousands, nineties, eighties, seventies, sixties
+return sixties, seventies, eighties, nineties, twothousands
 ```
