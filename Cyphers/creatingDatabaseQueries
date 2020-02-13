@@ -127,6 +127,24 @@ MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
 RETURN count(m) AS SpielbergMovies
 //Answer is 14
 
+//9
+optional match(m:movies)
+where tointeger(m.year) > 1959 AND tointeger(m.year) < 1970
+with count(m) as sixties
+optional match(m:movies)
+where tointeger(m.year) > 1969 AND tointeger(m.year) < 1980
+with count(m) as seventies, sixties
+optional match(m:movies)
+where tointeger(m.year) > 1979 AND tointeger(m.year) < 1990
+with count(m) as eighties, seventies, sixties
+optional match(m:movies)
+where tointeger(m.year) > 1989 AND tointeger(m.year) < 2000
+with count(m) as nineties, eighties, seventies, sixties
+optional match(m:movies)
+where tointeger(m.year) > 1999 AND tointeger(m.year) < 2010
+with count(m) as twothousands, nineties, eighties, seventies, sixties
+return sixties, seventies, eighties, nineties, twothousands
+
 //10 How many movies have more female actorsthan male actors?
 MATCH (ma:actors {sex:"M"})<-[casts]-(m:movies)-[c:casts]->(fa:actors {sex:"F"})
 WITH m, count(DISTINCT ma) AS MaleCount, count(DISTINCT fa) AS FemaleCount
