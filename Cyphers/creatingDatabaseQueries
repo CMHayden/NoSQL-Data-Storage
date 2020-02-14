@@ -1,20 +1,16 @@
 // Create an actors node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';'
 CREATE (:actors {actorid: row.actorid, name: row.name, sex: row.sex});
 
 // Create a directors node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELDTERMINATOR ';'
 CREATE (:directors {directorid: row.directorid, name: row.name, rate: toFloat(row.rate), gross: toFloat(row.gross), num: row.num});
 
 // Create a movies node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///movies.csv" AS row FIELDTERMINATOR ';'
 CREATE (:movies {movieid: row.movieid, title: row.title, year: row.year});
 
 //Create a writers node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///writers.csv" AS row FIELDTERMINATOR ';'
 CREATE (:writers {writerid: row.writerid, name: row.name});
 
