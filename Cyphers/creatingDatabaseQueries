@@ -118,6 +118,12 @@ MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
 RETURN count(m) AS SpielbergMovies
 //Answer is 14
 
+//8 Ridwan Cypher
+MATCH path = (a:actors)<-[:casts]-(m:movies)-[:casts]->(b:actors)
+WITH a, b, count(m) AS movieCount
+WHERE movieCount > 10 AND id(a) > id(b)
+RETURN movieCount, a.name, b.name
+
 //9
 optional match(m:movies)
 where tointeger(m.year) > 1959 AND tointeger(m.year) < 1970
