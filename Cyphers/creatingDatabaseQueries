@@ -125,12 +125,9 @@ WHERE movieCount > 10 AND id(a) > id(b)
 RETURN movieCount, a.name, b.name
 //answer is 
 //movieCount	a.name	b.name
-//11	"McGowan, Mickie"	"Lynn, Sherry (I)"
-//12	"Lynn, Sherry (I)"	"Angel, Jack (I)"
-//11	"McGowan, Mickie"	"Angel, Jack (I)"
-//10	"Lynn, Sherry (I)"	"Darling, Jennifer"
-//10	"Tuerpe, Paul"	"Kahan, Steve"
-//10	"Zucker, Charlotte"	"Breslau, Susan"
+// 11	"McGowan, Mickie"	"Lynn, Sherry (I)"
+// 12	"Lynn, Sherry (I)"	"Angel, Jack (I)"
+// 11	"McGowan, Mickie"	"Angel, Jack (I)"
 
 //9
 optional match(m:movies)
