@@ -46,7 +46,7 @@ This file stores information relating to actors. It stores an id to identify the
 
 * **directors.csv**
 
-This file stores information relating to directors. It stores an id to identify them, a name, a rat... **TODO RATE GROSS NUM**
+This file stores information relating to directors. It stores an id to identify them, a name, and a rating amongst other things.
 
 * **movies.csv**
 
@@ -176,7 +176,7 @@ Movies are connected through edges, some of which, contain data of their own. Th
 
 This can be seen in the ER Diagram
 
-![ER Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/UMLDiagram.png?token=AFNT2CCQ24QNCKFDKXN52226IWG5E)
+![ER Diagram](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/BigDataDiagram.png?token=AFNT2CATGVS3LEIEMI7FH7C6KPMYS)
 
 ## Task 2
 
@@ -273,7 +273,17 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 
 8.  List the male/female actors that have worked together on more than ten films, include their names and number of films they've co-starred in.
 
+    movieCount	a.name	            b.name
+    11	        "McGowan, Mickie"	"Lynn, Sherry (I)"
+    12	        "Lynn, Sherry (I)"	"Angel, Jack (I)"
+    11	        "McGowan, Mickie"	"Angel, Jack (I)"
+
+
 9.  List the number of movies released per decade as listed here: 1960-1969, 1970-1979, 1980-1989, 1990-1999, 2000-2010.
+
+    Sixties		Seventies	Eighties	Nineties	Two-Thousands
+	  192		    249		   593		  2184		       163	
+
 
 10. How many movies have more female actors than male actors?
 
@@ -293,12 +303,16 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 
     (Ewan McGregor)<- [ casts ]-(Star Wars: Episode I - The Phantom Menace) -[ casts ]-> (Daniels, Anthony (I)) <-[ casts ]- (Star Wars (1977)) -[ casts ]-> (Mark Hamill)
 
-    ![Graph output for this query](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/question%2012.png?token=AFNT2CCULVHEFVHJMR6HP426JQHYW)
+    ![Graph output for this query](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/graph.png?token=AFNT2CBLC6J2VN3AQY55OX26KPMVQ)
 
 
 13. List all actors (male/female) that have starred in ten or more different film genres (show names, and number of genres).
 
+    "Peck, Gregory"	10
+
 14. How many movies have an actor/actress that also directed the movie?
+
+    496
 
 15. How many movies have been written and directed by an actor/actress that they didn't star in? *i.e. the person who wrote and directed the movie is a film star but didn't appear in the movie*
 
@@ -330,22 +344,18 @@ LOAD CSV WITH HEADERS FROM "file:///moviestodirectors.csv" AS row FIELDTERMINATO
 LOAD CSV WITH HEADERS FROM "file:///moviestowriters.csv" AS row FIELDTERMINATOR ';' RETURN row
 
 --Create an actors node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///actors.csv" AS row FIELDTERMINATOR ';'
 CREATE (:actors {actorid: row.actorid, name: row.name, sex: row.sex});
 
 --Create a directors node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///directors.csv" AS row FIELDTERMINATOR ';'
 CREATE (:directors {directorid: row.directorid, name: row.name, rate: toFloat(row.rate), gross: toFloat(row.gross), num: row.num});
 
 --Create a movies node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///movies.csv" AS row FIELDTERMINATOR ';'
 CREATE (:movies {movieid: row.movieid, title: row.title, year: row.year});
 
 --Create a writers node
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///writers.csv" AS row FIELDTERMINATOR ';'
 CREATE (:writers {writerid: row.writerid, name: row.name});
 
@@ -356,7 +366,6 @@ CREATE INDEX ON :movies(movieid);
 CREATE INDEX ON :writers(writerid);
 
 --link between movies and actors
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///moviestoactors.csv" AS row FIELDTERMINATOR ';'
 MATCH (actors:actors {actorid: row.actorid})
 MATCH (movies:movies {movieid: row.movieid})
@@ -364,7 +373,6 @@ MERGE (movies)-[c:casts]->(actors)
 ON CREATE SET c.as_character = row.as_character, c.leading = row.leading;
 
 --link between movies and directors
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///moviestodirectors.csv" AS row FIELDTERMINATOR ';'
 MATCH (directors:directors {directorid: row.directorid})
 MATCH (movies:movies {movieid: row.movieid})
@@ -372,7 +380,6 @@ MERGE (movies)-[d:directed_by]->(directors)
 ON CREATE SET d.genre = row.genre;
 
 --link between movies and writers
-USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///moviestowriters.csv" AS row FIELDTERMINATOR ';'
 MATCH (writers:writers {writerid: row.writerid})
 MATCH (movies:movies {movieid: row.movieid})
@@ -380,7 +387,6 @@ MERGE (movies)-[w:written_by]->(writers)
 ON CREATE SET w.addition = row.addition;
 
 --create and link movies to ratings
-USING PERIODIC COMMIT 
 LOAD CSV WITH HEADERS FROM "file:///ratings.csv" AS row FIELDTERMINATOR ';'
 MATCH (m:movies {movieid: row.movieid})
 CREATE (r:ratings)
@@ -388,7 +394,6 @@ SET r+= row
 CREATE (m)-[:has_rating]->(r)
 
 --create and link movies to runtime
-USING PERIODIC COMMIT 
 LOAD CSV WITH HEADERS FROM "file:///runningtimes.csv" AS row FIELDTERMINATOR ';'
 MATCH (m:movies {movieid: row.movieid})
 CREATE (t:runtime)
@@ -399,102 +404,65 @@ CREATE (m)-[:length]->(t)
 ### Task 3
 
 ```sql
-//1: COUNT MALES
+--1: COUNT MALES
 MATCH (a:actors)  
 WHERE a.sex="M" 
 RETURN COUNT(a) AS MaleCount
-//Answer is 65794
+--Answer is 65794
 
-
-//2: COUNT FEMALES
+--2: COUNT FEMALES
 MATCH (a:actors)  
 WHERE a.sex="F" 
 RETURN COUNT(a) AS FemaleCount
-//Answer is 32896
+--Answer is 32896
 
-//Callum
-//3 male and female count in 1 query
+--3 male and female count in 1 query
 MATCH(a:actors)
 return a.sex, COUNT(*)
 
-//4:List the movie titles and number of directors involved for movies with more than 6directors
+--4:List the movie titles and number of directors involved for movies with more than 6directors
 MATCH (m:movies)-[d:directed_by]->(dir: directors)
 WITH m, count(dir.name) AS DirectorCount
 WHERE DirectorCount > 6
 RETURN m.title, DirectorCount
-//Answer
-//"Fantasia (1940)"	11
-//"Fantasia/2000 (1999)"	8
-//"Bambi (1942)"	7
-//"Dumbo (1941)"	7
-//"Duel in the Sun (1946)"	7
-//"Pinocchio (1940)"	7
+--Answer
+--"Fantasia (1940)"	11
+--"Fantasia/2000 (1999)"	8
+--"Bambi (1942)"	7
+--"Dumbo (1941)"	7
+--"Duel in the Sun (1946)"	7
+--"Pinocchio (1940)"	7
 
-
-//5 count running time <10 mins
+--5 count running time <10 mins
 match(t:runtime)
 where toInteger(t.time) < 10
 return count(t) as LessThanTen
 
-//Mark Cypher
-//6:Movies with Ewan McGregor and Robert Carlyle
+--6:Movies with Ewan McGregor and Robert Carlyle
 MATCH (m:movies),(o:actors {name:"McGregor, Ewan"}), (r:actors {name:"Carlyle, Robert (I)"})
 WHERE (m)-[:casts]->(o) AND (m)-[:casts]->(r)
 RETURN m.title AS movieTitles
-//Answer:
-//"Being Human (1994)"
-//"Trainspotting (1996)"
+--Answer:
+--"Being Human (1994)"
+--"Trainspotting (1996)"
 
-//7 Movies Directed by Spielberg
+--7 Movies Directed by Spielberg
 MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
 RETURN count(m) AS SpielbergMovies
-//Answer is 14
+--Answer is 14
 
-//10 How many movies have more female actorsthan male actors?
-MATCH (ma:actors {sex:"M"})<-[casts]-(m:movies)-[c:casts]->(fa:actors {sex:"F"})
-WITH m, count(DISTINCT ma) AS MaleCount, count(DISTINCT fa) AS FemaleCount
-WHERE FemaleCount > MaleCount
-RETURN count(m)
-//Answer 
-//324
+--8 Ridwan Cypher
+MATCH path = (a:actors)<-[:casts]-(m:movies)-[:casts]->(b:actors)
+WITH a, b, count(m) AS movieCount
+WHERE movieCount > 10 AND id(a) > id(b)
+RETURN movieCount, a.name, b.name
+--answer is 
+--movieCount	a.name	b.name
+-- 11	"McGowan, Mickie"	"Lynn, Sherry (I)"
+-- 12	"Lynn, Sherry (I)"	"Angel, Jack (I)"
+-- 11	"McGowan, Mickie"	"Angel, Jack (I)"
 
-
-//11 Based ratings with 10,000 or more votes, what are the top 3 movie genres usingthe average rank per movie genreas the metric?(Note: where a higher value for rankis considered a better movie)
-MATCH (r:ratings)<-[has_rating]-(m:movies)-[d:directed_by]->(directors)
-WHERE toInt(r.votes)>10000
-RETURN avg(toInt(r.rank)) AS averageRank, d.genre
-ORDER BY averageRank DESC
-LIMIT 3
-//Answer is:
-//7.625	"Western"
-//7.6	"Documentary"
-//7.5	"Film-Noir"
-
-
-//12 Show the shortest path between actors ‘Ewan McGregor’ and ‘Mark Hamill’ from the IMDB data subset.  Include nodes and edges –answer can be shown as an image or text description in form (a)-[ ]->(b)-[ ]-> (c)..
-MATCH (a:actors {name:"McGregor, Ewan"}), (h:actors {name:"Hamill, Mark (I)"}),
-p = shortestPath((a)-[*]-(h)) 
-WHERE a.name = "McGregor, Ewan" AND h.name = "Hamill, Mark (I)"
-RETURN p
-//Answer 
-//take screenshot
-
-//13 List all actors(male/female) that have starred in 10 or moredifferent film genres  (show names, and number of genres)
-MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(directors)
-WITH a, count(DISTINCT d.genre) AS GenreCount
-WHERE GenreCount >= 10
-RETURN a.name, GenreCount
-//Answer
-//"Peck, Gregory"	10
-
-//14 
-MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(dir: directors)
-WHERE a.name = dir.name
-RETURN count(m) AS MovieCount
-//Answer
-//496
-
-//9
+--9
 optional match(m:movies)
 where tointeger(m.year) > 1959 AND tointeger(m.year) < 1970
 with count(m) as sixties
@@ -511,4 +479,51 @@ optional match(m:movies)
 where tointeger(m.year) > 1999 AND tointeger(m.year) < 2010
 with count(m) as twothousands, nineties, eighties, seventies, sixties
 return sixties, seventies, eighties, nineties, twothousands
+
+
+--10 How many movies have more female actorsthan male actors?
+MATCH (ma:actors {sex:"M"})<-[casts]-(m:movies)-[c:casts]->(fa:actors {sex:"F"})
+WITH m, count(DISTINCT ma) AS MaleCount, count(DISTINCT fa) AS FemaleCount
+WHERE FemaleCount > MaleCount
+RETURN count(m)
+--Answer 
+--324
+
+
+--11 Based ratings with 10,000 or more votes, what are the top 3 movie genres usingthe average rank per movie genreas the metric?(Note: where a higher value for rankis considered a better movie)
+MATCH (r:ratings)<-[has_rating]-(m:movies)-[d:directed_by]->(directors)
+WHERE toInt(r.votes)>10000
+RETURN avg(toInt(r.rank)) AS averageRank, d.genre
+ORDER BY averageRank DESC
+LIMIT 3
+--Answer is:
+--7.625	"Western"
+--7.6	"Documentary"
+--7.5	"Film-Noir"
+
+
+--12 Show the shortest path between actors ‘Ewan McGregor’ and ‘Mark Hamill’ from the IMDB data subset.  Include nodes and edges –answer can be shown as an image or text description in form (a)-[ ]->(b)-[ ]-> (c)..
+MATCH (a:actors {name:"McGregor, Ewan"}), (h:actors {name:"Hamill, Mark (I)"}),
+p = shortestPath((a)-[*]-(h)) 
+WHERE a.name = "McGregor, Ewan" AND h.name = "Hamill, Mark (I)"
+RETURN p
+--Answer 
+--take screenshot
+
+--13 List all actors(male/female) that have starred in 10 or moredifferent film genres  (show names, and number of genres)
+MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(directors)
+WITH a, count(DISTINCT d.genre) AS GenreCount
+WHERE GenreCount >= 10
+RETURN a.name, GenreCount
+--Answer
+--"Peck, Gregory"	10
+
+--14 
+MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(dir: directors)
+WHERE a.name = dir.name
+RETURN count(m) AS MovieCount
+--Answer
+--496
+
+
 ```
