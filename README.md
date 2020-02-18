@@ -28,9 +28,15 @@ In this section we will discuss a summary of the contributions of each group mem
 
 ### Ridwan Mukhtar
 
+My main individual contribution to the project was the creation of the database. With help from Callum and Mark we managed to create it, however, this part was mostly entrusted to me to do. I also helped Callum and Mark when they got stuck with their queries, along with creating my own queries. Overall, I feel I contributed a fair amount and am happy with my colleagues’ contributions.
+
 ### Mark Schmieg
 
+My main contribution was designing the database. I was tasked with designing how we would create the database. When I had some ideas on how the database should be, I created ER Diagrams which we later discussed and modified as a group. I helped Ridwan with the creation of the database and the loading of the data along with helping Callum with questions he had regarding task 1. I also did my fair share of the queries. Overall, I am happy with the work myself and my group members did.
+
 ### Callum Hayden
+
+My main contribution was writing the report. I struggled more with the queries, but with help from both Mark and Ridwan I managed to learn and write a few queries on my own. I managed to help a bit with the loading of data and creation of the database, however, it was more so my colleagues who figured this task out. I’m pleased with the work I did and proud of what I learnt and am more than pleased with the contributions from my team members.
 
 ## Task 1
 
