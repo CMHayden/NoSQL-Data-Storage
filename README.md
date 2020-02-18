@@ -322,6 +322,8 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 
 15. How many movies have been written and directed by an actor/actress that they didn't star in? *i.e. the person who wrote and directed the movie is a film star but didn't appear in the movie*
 
+    1678
+
 ## Conclusion
 
 In conclusion, we learnt how to truly collaborate. While it would have been easier to simply split up the queries into five each and get them done individually, we chose to attempt to collaborate. We used GitHub (private repository) to help with our collaboration and we attempted to all work on everything. The harder queries we sat together and attempted to figure them out between us which lead to a great experience of learning to be better team players. This also allowed us to discuss how we are doing queries, and which we believe would be the more efficient way of doing a query, along with all pitching in towards the design of the graph itself.
