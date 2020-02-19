@@ -199,4 +199,4 @@ MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[wri
 WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name AND a2.name = d.name
 RETURN count(DISTINCT(m.title)) AS counter
 //Answer
-//1678
+//754
