@@ -103,6 +103,8 @@ RETURN m.title, DirectorCount
 match(t:runtime)
 where toInteger(t.time) < 10
 return count(t) as LessThanTen
+//Answer:
+//7
 
 //Mark Cypher
 //6:Movies with Ewan McGregor and Robert Carlyle
