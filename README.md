@@ -535,9 +535,9 @@ RETURN count(m) AS MovieCount
 
 --15
 --checks for actors and directors
-MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers)
-WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name
+MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers), (a2:actors)
+WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name AND a2.name = d.name
 RETURN count(DISTINCT(m.title)) AS counter
 --Answer
---1678
+--
 ```
