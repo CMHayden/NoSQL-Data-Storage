@@ -262,7 +262,9 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 
 5.  Number of movies with a running time of less than 10 minutes.
 
-    7
+    7 if only counting original running time of movies.
+
+    11 if counting all versions of movies.
 
 
 6.  The movie titles which star both 'Ewan McGregor' and 'Robert Carlyle' (i.e. both actors were in the same film)
@@ -288,7 +290,7 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 9.  List the number of movies released per decade as listed here: 1960-1969, 1970-1979, 1980-1989, 1990-1999, 2000-2010.
 
     Sixties		Seventies	Eighties	Nineties	Two-Thousands
-	  192		    249		   593		  2184		       163	
+	  192		    249		   593		  2184		       167	
 
 
 10. How many movies have more female actors than male actors?
@@ -322,7 +324,7 @@ For each of our nodes. This returns the first 100 actors stored inside the actor
 
 15. How many movies have been written and directed by an actor/actress that they didn't star in? *i.e. the person who wrote and directed the movie is a film star but didn't appear in the movie*
 
-    1678
+    754
 
 ## Conclusion
 
