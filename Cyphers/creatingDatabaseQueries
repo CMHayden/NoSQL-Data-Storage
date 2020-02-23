@@ -103,6 +103,8 @@ RETURN m.title, DirectorCount
 match(t:runtime)
 where toInteger(t.time) < 10
 return count(t) as LessThanTen
+//Answer:
+//7
 
 //Mark Cypher
 //6:Movies with Ewan McGregor and Robert Carlyle
@@ -143,7 +145,7 @@ optional match(m:movies)
 where tointeger(m.year) > 1989 AND tointeger(m.year) < 2000
 with count(m) as nineties, eighties, seventies, sixties
 optional match(m:movies)
-where tointeger(m.year) > 1999 AND tointeger(m.year) < 2010
+where tointeger(m.year) > 1999 AND tointeger(m.year) <= 2010
 with count(m) as twothousands, nineties, eighties, seventies, sixties
 return sixties, seventies, eighties, nineties, twothousands
 
@@ -193,8 +195,8 @@ RETURN count(m) AS MovieCount
 
 //15
 //checks for actors and directors
-MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers)
-WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name
+MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers), (a2:actors)
+WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name AND a2.name = d.name
 RETURN count(DISTINCT(m.title)) AS counter
 //Answer
-//1678
+//754
