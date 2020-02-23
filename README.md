@@ -535,7 +535,6 @@ MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(dir: directors)
 WHERE a.name = dir.name
 RETURN count(m) AS MovieCount
 
-<<<<<<< HEAD
 
 --15: sets M as the movies, W as the writter who wrote movie M, as the direc-tor who directed M, A as the actors in the movie M and A2 as the list of all actors. This query goes through all the different movies and makes sure that the movie's director and the movie's writer are the same and make sure that none of the actors in the movies are the director/writer, then we also check the movie's director/writer is also an actor (just not in the movie currently queried)
 
@@ -543,13 +542,4 @@ MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[wri
 WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name AND a2.name = d.name
 RETURN count(DISTINCT(m.title)) AS counter
 
-=======
---15
---checks for actors and directors
-MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers), (a2:actors)
-WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name AND a2.name = d.name
-RETURN count(DISTINCT(m.title)) AS counter
---Answer
---
->>>>>>> dcf54f6bda16e859fab5e41bc17d3232f9536c2f
 ```
