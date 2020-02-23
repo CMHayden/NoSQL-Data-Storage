@@ -210,7 +210,7 @@ Once we had our nodes and their indexes, we needed a way to link them. To do thi
 
 We then tested the database by using some simple commands such as "call db.schema()" to see how the graph looked. The output to this query looks like so:
 
-![Screenshot of output of call db.schema() command](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/screenshotOfGraph.png?token=AFNT2CDPDJVD7IH2WXSWXMK6JQD7O)
+![Screenshot of output of call db.schema() command](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/screenshotOfGraph.png?token=AFNT2CBAHSZVSI2FSEOW3326LP65A)
 
 And we also ran commands such as:
 
@@ -222,7 +222,7 @@ LIMIT 100
 
 For each of our nodes. This returns the first 100 actors stored inside the actors node and is something we recommend to ensure the data is loaded as expected. You can remove the limit, however, the query may take a long time to run. Sample output should look similar to this:
 
-![Output for 100 actors query](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/100Actors.png?token=AFNT2CCL7DHXDSO6ILXKDZC6JQFD6)
+![Output for 100 actors query](https://raw.githubusercontent.com/CMHayden/NoSQL-Data-Storage/master/images/100Actors.png?token=AFNT2CDEHBHEEJJZ4T6CKMC6LP7A4)
 
 ## Task 3
 
