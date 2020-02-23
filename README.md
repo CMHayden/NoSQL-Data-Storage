@@ -36,7 +36,7 @@ My main contribution was designing the database. I was tasked with designing how
 
 ### Callum Hayden
 
-My main contribution was writing the report. I struggled more with the queries, but with help from both Mark and Ridwan I managed to learn and write a few queries on my own. I managed to help a bit with the loading of data and creation of the database, however, it was more so my colleagues who figured this task out. I’m pleased with the work I did and proud of what I learnt and am more than pleased with the contributions from my team members.
+My main contribution was writing the report. I also wrote some queries and buckled down to help as a team when we were struggling with queries or unsure if they were correct. I helped whenever needed and I am extremely happy with my contribution as well as that of my team members.
 
 ## Task 1
 
