@@ -334,6 +334,7 @@ Apart from our soft skills, we all learnt massively about graph databases and en
 
 We all got to learn and practice cypher syntax. From simple queries such as counting the amount of male actors, to more complex queries such as query 11 which matches multiple nodes and edges to get the required data.
 
+Due to some ambiguity in the questions for task three, some of the queries have more than one answer as we did not want to make an assumption, which we believe is the correct thing to do.
 
 ## Appendix
 
@@ -414,132 +415,131 @@ CREATE (m)-[:length]->(t)
 ### Task 3
 
 ```sql
---1: COUNT MALES
+--1: sets all actors as A and counts how many actors A have a sex of M
+
 MATCH (a:actors)  
 WHERE a.sex="M" 
 RETURN COUNT(a) AS MaleCount
---Answer is 65794
 
---2: COUNT FEMALES
+
+--2: sets all actors as A and counts how many actors A have a sex of F
+
 MATCH (a:actors)  
 WHERE a.sex="F" 
 RETURN COUNT(a) AS FemaleCount
---Answer is 32896
 
---3 male and female count in 1 query
+
+--3: sets all actors as A and counts and separates them by sex
+
 MATCH(a:actors)
-return a.sex, COUNT(*)
+RETURN a.sex, COUNT(*)
 
---4:List the movie titles and number of directors involved for movies with more than 6directors
+
+--4:: sets movies M and the directors DIR who directed them. Returns the movie title along with the number of directors where there are more than six di-rectors
+
 MATCH (m:movies)-[d:directed_by]->(dir: directors)
 WITH m, count(dir.name) AS DirectorCount
 WHERE DirectorCount > 6
 RETURN m.title, DirectorCount
---Answer
---"Fantasia (1940)"	11
---"Fantasia/2000 (1999)"	8
---"Bambi (1942)"	7
---"Dumbo (1941)"	7
---"Duel in the Sun (1946)"	7
---"Pinocchio (1940)"	7
 
---5 count running time <10 mins
-match(t:runtime)
-where toInteger(t.time) < 10
-return count(t) as LessThanTen
 
---6:Movies with Ewan McGregor and Robert Carlyle
+--5: sets runtime T and counts how many run times are less than 10.
+
+MATCH(t:runtime)
+WHERE toInteger(t.time) < 10
+RETURN count(t) as LessThanTen
+
+--5 including movie variants: Sets runtime T and counts how many different version included movies have a run time less than 10.
+MATCH(t:runtime)
+WHERE toInteger(t.time1) < 10
+RETURN count(t) as LessThanTen
+
+
+--6: We go through all the movies and check if the movie had both Ewan and Robert acting in them and if so, return the title
+
 MATCH (m:movies),(o:actors {name:"McGregor, Ewan"}), (r:actors {name:"Carlyle, Robert (I)"})
 WHERE (m)-[:casts]->(o) AND (m)-[:casts]->(r)
 RETURN m.title AS movieTitles
---Answer:
---"Being Human (1994)"
---"Trainspotting (1996)"
 
---7 Movies Directed by Spielberg
+
+--7: Sets movies M which have been directed by director D with a name of Spielberg, Steven. Counts the number of movies which have been directed by D.
+
 MATCH (m:movies)-[:directed_by]->(d:directors {name:"Spielberg, Steven"})
 RETURN count(m) AS SpielbergMovies
---Answer is 14
 
---8 Ridwan Cypher
+
+--8: Sets movies M and actors A and B where A and B have acted in the movie M. Returns a count of all these movies where the count is greater than 10.
+
 MATCH path = (a:actors)<-[:casts]-(m:movies)-[:casts]->(b:actors)
 WITH a, b, count(m) AS movieCount
 WHERE movieCount > 10 AND id(a) > id(b)
 RETURN movieCount, a.name, b.name
---answer is 
---movieCount	a.name	b.name
--- 11	"McGowan, Mickie"	"Lynn, Sherry (I)"
--- 12	"Lynn, Sherry (I)"	"Angel, Jack (I)"
--- 11	"McGowan, Mickie"	"Angel, Jack (I)"
-
---9
-optional match(m:movies)
-where tointeger(m.year) > 1959 AND tointeger(m.year) < 1970
-with count(m) as sixties
-optional match(m:movies)
-where tointeger(m.year) > 1969 AND tointeger(m.year) < 1980
-with count(m) as seventies, sixties
-optional match(m:movies)
-where tointeger(m.year) > 1979 AND tointeger(m.year) < 1990
-with count(m) as eighties, seventies, sixties
-optional match(m:movies)
-where tointeger(m.year) > 1989 AND tointeger(m.year) < 2000
-with count(m) as nineties, eighties, seventies, sixties
-optional match(m:movies)
-where tointeger(m.year) > 1999 AND tointeger(m.year) < 2010
-with count(m) as twothousands, nineties, eighties, seventies, sixties
-return sixties, seventies, eighties, nineties, twothousands
 
 
---10 How many movies have more female actorsthan male actors?
+--9: Sets movies M and counts how many movies have a year between 59-70 to store as sixties, 69-80 as seventies, 79-90 as eighties, 89-2000 as nine-ties, and 1999-2011 as twothounsands. Twothousands is the only which in-cludes two ‘zero’ years, ie, yeards ending in 0 (2000 and 2010).
+
+OPTIONAL MATCH(m:movies)
+WHERE toInteger(m.year) > 1959 AND toInteger(m.year) < 1970
+WITH count(m) as sixties
+OPTIONAL MATCH(m:movies)
+WHERE toInteger(m.year) > 1969 AND toInteger(m.year) < 1980
+WITH count(m) as seventies, sixties
+OPTIONAL MATCH(m:movies)
+WHERE toInteger(m.year) > 1979 AND toInteger(m.year) < 1990
+WITH count(m) as eighties, seventies, sixties
+OPTIONAL MATCH(m:movies)
+WHERE tointeger(m.year) > 1989 AND tointeger(m.year) < 2000
+WITH count(m) as nineties, eighties, seventies, sixties
+OPTIONAL MATCH(m:movies)
+WHERE tointeger(m.year) > 1999 AND tointeger(m.year) < 2011
+WITH count(m) as twothousands, nineties, eighties, seventies, sixties
+RETURN sixties, seventies, eighties, nineties, twothousands
+
+
+--10: Set an actor nodes sex to "F" and the other actor node to "M". This al-lows us to count how many males are being casted for the movie and how many females. From this, we can count each node and check which count is greater and return it
+
 MATCH (ma:actors {sex:"M"})<-[casts]-(m:movies)-[c:casts]->(fa:actors {sex:"F"})
 WITH m, count(DISTINCT ma) AS MaleCount, count(DISTINCT fa) AS FemaleCount
 WHERE FemaleCount > MaleCount
 RETURN count(m)
---Answer 
---324
 
 
---11 Based ratings with 10,000 or more votes, what are the top 3 movie genres usingthe average rank per movie genreas the metric?(Note: where a higher value for rankis considered a better movie)
+--11: An average of the total of each genres ratings are calculated and re-turned, where the top 3 are displayed
+
 MATCH (r:ratings)<-[has_rating]-(m:movies)-[d:directed_by]->(directors)
-WHERE toInt(r.votes)>10000
+WHERE toInt(r.votes)>9999
 RETURN avg(toInt(r.rank)) AS averageRank, d.genre
 ORDER BY averageRank DESC
 LIMIT 3
---Answer is:
---7.625	"Western"
---7.6	"Documentary"
---7.5	"Film-Noir"
 
 
---12 Show the shortest path between actors ‘Ewan McGregor’ and ‘Mark Hamill’ from the IMDB data subset.  Include nodes and edges –answer can be shown as an image or text description in form (a)-[ ]->(b)-[ ]-> (c)..
+--12: We use the shortestPath function and put inside the nodes the two ac-tors Ewan and Mark. From this, we are able to find the shortest path be-tween the two actors and return it.
+
 MATCH (a:actors {name:"McGregor, Ewan"}), (h:actors {name:"Hamill, Mark (I)"}),
 p = shortestPath((a)-[*]-(h)) 
 WHERE a.name = "McGregor, Ewan" AND h.name = "Hamill, Mark (I)"
 RETURN p
---Answer 
---take screenshot
 
---13 List all actors(male/female) that have starred in 10 or moredifferent film genres  (show names, and number of genres)
+
+--13: This query counts the distinct genres that an actor as acted in as Gen-reCount and if GenreCount is greater or equal to 10 the name of the actor and the actor's GenreCount are returned
+
 MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(directors)
 WITH a, count(DISTINCT d.genre) AS GenreCount
 WHERE GenreCount >= 10
 RETURN a.name, GenreCount
---Answer
---"Peck, Gregory"	10
 
---14 
+
+--14: sets M as the movies, A as the actors starring in M and DIR as the di-rectors directing M. The query then finds the movies where an actor star-ring in movie M is also its director, and returns the total number of mov-ies with this case
+
 MATCH (a:actors)<-[casts]-(m:movies)-[d:directed_by]->(dir: directors)
 WHERE a.name = dir.name
 RETURN count(m) AS MovieCount
---Answer
---496
 
---15
---checks for actors and directors
-MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers)
-WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name
+
+--15: sets M as the movies, W as the writter who wrote movie M, as the direc-tor who directed M, A as the actors in the movie M and A2 as the list of all actors. This query goes through all the different movies and makes sure that the movie's director and the movie's writer are the same and make sure that none of the actors in the movies are the director/writer, then we also check the movie's director/writer is also an actor (just not in the movie currently queried)
+
+MATCH (m:movies)-[c:casts]->(a:actors), (d:directors)<-[db:directed_by]-(m)-[written_by]->(w:writers), (a2:actors)
+WHERE NOT a.name = d.name AND NOT w.name = a.name AND d.name = w.name AND a2.name = d.name
 RETURN count(DISTINCT(m.title)) AS counter
---Answer
---1678
+
 ```
